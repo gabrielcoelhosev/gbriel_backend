@@ -19,3 +19,53 @@ model user {
   password   String
   created_at DateTime @default(now())
 }
+
+model project {
+  id                Int      @id @default(autoincrement())
+  title             String
+  short_description String
+  description       String
+  thumbail_url      String?  @unique
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  link  projectLink[]
+  stack projectStack[]
+}
+
+model stack {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  project projectStack[]
+}
+
+model projectStack {
+  projectId Int
+  stackId   Int
+
+  project project @relation(fields: [projectId], references: [id])
+  stack   stack   @relation(fields: [stackId], references: [id])
+
+  @@id([projectId, stackId])
+}
+
+model projectLink {
+  id Int @id @default(autoincrement())
+
+  project_id Int
+
+  type    linkType
+  label   String
+  url     String
+  project project? @relation(fields: [project_id], references: [id])
+}
+
+enum linkType {
+  FRONTEND
+  BACKEND
+  DEMO
+  FIGMA
+  DOCS
+  YOUTUBE
+}
