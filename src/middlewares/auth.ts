@@ -3,7 +3,7 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 export async function authMiddleware(request: FastifyRequest, reply: FastifyReply) {
     try {
 
-        if(request.url.startsWith("/check") || request.url.startsWith("/auth")) return;
+        if(request.url.startsWith("/check") || request.url.startsWith("/auth") || request.url.startsWith("/docs") || request.url.startsWith("/openapi.json")) return;
 
         await request.jwtVerify();
     } catch {
